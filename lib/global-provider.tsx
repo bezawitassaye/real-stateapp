@@ -1,4 +1,6 @@
-import { createContext } from "react";
+import { createContext, ReactNode } from "react";
+import { getCurrentUser } from "./appwrite";
+import { useAppwrite } from "./useAppwrite";
 
 interface User {
   $id: string;
@@ -15,3 +17,32 @@ interface GlobalContextType {
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
+
+interface GlobalProviderProps {
+  children: ReactNode;
+}
+
+export const GlobalProvider = ({ children }: GlobalProviderProps) => {
+  const {
+    data: user,
+    loading,
+    refetch,
+  } = useAppwrite({
+    fn: getCurrentUser,
+  });
+
+  const isLogged = !!user;
+
+  return (
+    <GlobalContext.Provider
+      value={{
+        isLogged,
+        user,
+        loading,
+        refetch,
+      }}
+    >
+      {children}
+    </GlobalContext.Provider>
+  );
+};
