@@ -1,3 +1,4 @@
+import icons from '@/constants/icons'
 import images from '@/constants/images'
 import React from 'react'
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
@@ -7,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 const signin = () => {
   const handlelogin =()=>{
-    
+
   }
   return (
     <SafeAreaView className='bg-white h-full'>
@@ -29,7 +30,17 @@ const signin = () => {
 
                 <Text className='text-lg font-rubik text-black-200 text-center
                 mt-12'>Login to ReState with Google</Text>
-                <TouchableOpacity onPress={handlelogin}>
+                <TouchableOpacity onPress={handlelogin}
+                className='bg-white shadow-md shadow-zinc-300 
+                rounded-full w-full py-4 mt-5'>
+                  <View className='flex'>
+                    <Image
+                    source={icons.google}
+                    className='w-5 h-5'
+                    resizeMode='contain'/>
+
+                  </View>
+
                   
                   </TouchableOpacity> 
 
