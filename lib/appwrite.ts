@@ -1,4 +1,6 @@
 import { Account, Avatars, Client } from "appwrite";
+import * as Linking from "expo-linking";
+
 
 export const config = {
     platform: "com.jsm.restate",
@@ -17,7 +19,7 @@ export const account = new Account(client);
 
 export async function login() {
     try {
-
+      const redirectUri = Linking.createURL("./")
     } catch (error) {
         console.error(error);
         return false;
