@@ -4,7 +4,7 @@ import { Text, View } from 'react-native'
 const signin = () => {
   return (
     <View>
-      <Text>sign-in</Text>
+      <Text>sign-i n</Text>
     </View>
   )
 }
