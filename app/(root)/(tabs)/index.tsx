@@ -9,7 +9,10 @@ export default function Index() {
         alignItems: "center",
       }}
     >
+      <Text className="text-xl font-bold">Welcome</Text>
       <Text> to edit this screen.</Text>
+
+      
     </View>
   );
 }
