@@ -1,5 +1,6 @@
-import { Account, Avatars, Client } from "appwrite";
+import { Account, Avatars, Client, OAuthProvider } from "appwrite";
 import * as Linking from "expo-linking";
+import { openAuthSessionAsync } from "expo-web-browser";
 
 
 export const config = {
@@ -8,7 +9,7 @@ export const config = {
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID
 }
 
-export const client = new Client
+export const client = new Client()
 
 client
     .setEndpoint(config.endpoint!)
@@ -20,6 +21,19 @@ export const account = new Account(client);
 export async function login() {
     try {
       const redirectUri = Linking.createURL("./")
+
+      const response = await account.createOAuth2Token(
+        OAuthProvider.Google,
+        redirectUri
+      )
+      if(!response)
+        throw new Error("Faild to login")
+
+      const browserResult = await openAuthSessionAsync(
+        response.toString(),
+        redirectUri
+      )
+      
     } catch (error) {
         console.error(error);
         return false;
