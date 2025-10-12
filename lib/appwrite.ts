@@ -32,7 +32,19 @@ export async function login() {
       const browserResult = await openAuthSessionAsync(
         response.toString(),
         redirectUri
-      )
+      );
+       if (browserResult.type !== "success")
+      throw new Error("Create OAuth2 token failed");
+
+    const url = new URL(browserResult.url);
+    const secret = url.searchParams.get("secret")?.toString();
+    const userId = url.searchParams.get("userId")?.toString();
+    if (!secret || !userId) throw new Error("Create OAuth2 token failed");
+
+    const session = await account.createSession(userId, secret);
+    if (!session) throw new Error("Failed to create session");
+
+    return true;
       
     } catch (error) {
         console.error(error);
