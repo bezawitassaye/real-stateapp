@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
 export default function Index() {
@@ -11,7 +12,7 @@ export default function Index() {
     >
       <Text className="text-xl  font-rubik ">Welcome</Text>
       <Text> to edit this screen.</Text>
-
+      <Link href="/sign-in">Sign in</Link>
       
     </View>
   );
