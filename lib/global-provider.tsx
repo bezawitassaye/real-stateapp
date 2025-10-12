@@ -1,4 +1,4 @@
-import { createContext, ReactNode } from "react";
+import { createContext, ReactNode, useContext } from "react";
 import { getCurrentUser } from "./appwrite";
 import { useAppwrite } from "./useAppwrite";
 
@@ -46,3 +46,14 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
     </GlobalContext.Provider>
   );
 };
+
+
+export const useGlobalContext = (): GlobalContextType => {
+  const context = useContext(GlobalContext);
+  if (!context)
+    throw new Error("useGlobalContext must be used within a GlobalProvider");
+
+  return context;
+};
+
+export default GlobalProvider;
