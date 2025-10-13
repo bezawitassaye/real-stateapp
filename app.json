@@ -6,6 +6,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
+    
     "scheme": "com.jsm.restate",
     "extra": {
       "appwriteEndpoint": "process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT",
