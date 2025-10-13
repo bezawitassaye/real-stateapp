@@ -1,9 +1,9 @@
-import icons from '@/constants/icons'
-import images from '@/constants/images'
-import { login } from '@/lib/appwrite'
-import React from 'react'
-import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import icons from '../constants/icons';
+import images from '../constants/images';
+import { login } from '../lib/appwrite';
 
 
 

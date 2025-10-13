@@ -21,43 +21,53 @@ client
 
 export const avatar = new Avatars(client);
 export const account = new Account(client);
-
-
 export async function login() {
   try {
-     
-     const redirectUri = Linking.createURL("/callback");
+    // ✅ Step 1: check if user already logged in
+    const existing = await account.get().catch(() => null);
+    if (existing) {
+      console.log("User already logged in, clearing old session...");
+      await account.deleteSession("current"); // remove previous session
+    }
 
-     const response = await account.createOAuth2Token(
+    // ✅ Step 2: perform OAuth2 login again
+    const redirectUri = Linking.createURL("/");
+
+    const response = await account.createOAuth2Token(
       OAuthProvider.Google,
       redirectUri
     );
 
-     if (!response) throw new Error("faild to login");
+    if (!response) throw new Error("Failed to start login");
 
     const browserResult = await openAuthSessionAsync(
       response.toString(),
       redirectUri
     );
 
-    if(browserResult.type !== 'success') throw new Error("faild to login")
+    if (browserResult.type !== "success")
+      throw new Error("Failed to complete login");
 
+    // ✅ Step 3: extract credentials
     const url = new URL(browserResult.url);
     const secret = url.searchParams.get("secret")?.toString();
     const userId = url.searchParams.get("userId")?.toString();
-    
-    if (!secret || !userId) throw new Error("Create OAuth2 token failed");
 
+    if (!secret || !userId) throw new Error("OAuth2 token creation failed");
+
+    // ✅ Step 4: safely create new session
     const session = await account.createSession(userId, secret);
     if (!session) throw new Error("Failed to create session");
 
+    console.log("✅ Login successful for:", session.userId);
     return true;
 
-    } catch (error) {
+  } catch (error) {
     console.error(error);
     return false;
   }
 }
+
 
 export async function logout() {
   try {
