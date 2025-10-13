@@ -14,6 +14,7 @@ import { useGlobalContext } from "@/lib/global-provider";
 
 import { settings } from "@/constants/data";
 import icons from "@/constants/icons";
+import images from "@/constants/images";
 
 interface SettingsItemProp {
   icon: ImageSourcePropType;
@@ -72,7 +73,7 @@ const Profile = () => {
         <View className="flex flex-row justify-center mt-5">
           <View className="flex flex-col items-center relative mt-5">
             <Image
-              source={{ uri: user?.avatar }}
+              source={user?.avatar ? { uri: user.avatar } : images.avatar}
               className="size-44 relative rounded-full"
             />
             <TouchableOpacity className="absolute bottom-11 right-2">
