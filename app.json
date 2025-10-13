@@ -1,3 +1,4 @@
+
 {
   "expo": {
     "name": "realstate-app",
@@ -5,7 +6,10 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "realstateapp",
+    "scheme": "com.jsm.restate",
+    "extra": {
+      "appwriteEndpoint": "process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT",
+      "appwriteProject": "process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID," },
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
 
