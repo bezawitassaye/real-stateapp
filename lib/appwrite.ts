@@ -59,6 +59,16 @@ export async function login() {
   }
 }
 
+export async function logout() {
+  try {
+    const result = await account.deleteSession("current");
+    return result;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
 
 export async function getCurrentUser() {
   try {
