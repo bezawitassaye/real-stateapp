@@ -1,10 +1,10 @@
 import { ID } from "react-native-appwrite";
 import { config, databases } from "./appwrite";
 import {
-    agentImages,
-    galleryImages,
-    propertiesImages,
-    reviewImages,
+  agentImages,
+  galleryImages,
+  propertiesImages,
+  reviewImages,
 } from "./data";
 
 const COLLECTIONS = {
@@ -170,7 +170,7 @@ async function seed() {
           bathroom: Math.floor(Math.random() * 5) + 1,
           rating: Math.floor(Math.random() * 5) + 1,
           facilities: selectedFacilities,
-        //   image: image,
+          image: image,
           agent: assignedAgent.$id,
          // reviews: assignedReviews.map((review) => review.$id),
           galary: assignedGalleries.map((gallery) => gallery.$id),
