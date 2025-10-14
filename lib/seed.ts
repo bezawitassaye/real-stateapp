@@ -166,14 +166,14 @@ async function seed() {
           geolocation: `192.168.1.${i}, 192.168.1.${i}`,
           price: Math.floor(Math.random() * 9000) + 1000,
           area: Math.floor(Math.random() * 3000) + 500,
-          bedrooms: Math.floor(Math.random() * 5) + 1,
-          bathrooms: Math.floor(Math.random() * 5) + 1,
+          bedroom: Math.floor(Math.random() * 5) + 1,
+          bathroom: Math.floor(Math.random() * 5) + 1,
           rating: Math.floor(Math.random() * 5) + 1,
           facilities: selectedFacilities,
-          image: image,
+        //   image: image,
           agent: assignedAgent.$id,
-          reviews: assignedReviews.map((review) => review.$id),
-          gallery: assignedGalleries.map((gallery) => gallery.$id),
+         // reviews: assignedReviews.map((review) => review.$id),
+          galary: assignedGalleries.map((gallery) => gallery.$id),
         }
       );
 
