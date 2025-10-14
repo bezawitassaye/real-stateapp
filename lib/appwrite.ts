@@ -4,6 +4,7 @@ import {
   Account,
   Avatars,
   Client,
+  Databases,
   OAuthProvider
 } from "react-native-appwrite";
 
@@ -28,6 +29,7 @@ client
 
 export const avatar = new Avatars(client);
 export const account = new Account(client);
+export const databases = new Databases(client);
 export async function login() {
   try {
     // ✅ Step 1: check if user already logged in
