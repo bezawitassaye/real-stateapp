@@ -7,20 +7,22 @@ import {
   Databases,
   OAuthProvider,
   Query,
+  Storage
 } from "react-native-appwrite";
 
 export const config = {
   platform: "com.jsm.restate",
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
   projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
-  databaseId:process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
   galleriesCollectionId:
     process.env.EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID,
   reviewsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID,
   agentsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID,
   propertiesCollectionId:
     process.env.EXPO_PUBLIC_APPWRITE_PROPERTIES_COLLECTION_ID,
-}
+  bucketId: process.env.EXPO_PUBLIC_APPWRITE_BUCKET_ID,
+};
 
 export const client = new Client();
 client
@@ -31,53 +33,39 @@ client
 export const avatar = new Avatars(client);
 export const account = new Account(client);
 export const databases = new Databases(client);
+export const storage = new Storage(client);
+
 export async function login() {
   try {
-    // ✅ Step 1: check if user already logged in
-    const existing = await account.get().catch(() => null);
-    if (existing) {
-      console.log("User already logged in, clearing old session...");
-      await account.deleteSession("current"); // remove previous session
-    }
-
-    // ✅ Step 2: perform OAuth2 login again
     const redirectUri = Linking.createURL("/");
 
     const response = await account.createOAuth2Token(
       OAuthProvider.Google,
       redirectUri
     );
-
-    if (!response) throw new Error("Failed to start login");
+    if (!response) throw new Error("Create OAuth2 token failed");
 
     const browserResult = await openAuthSessionAsync(
       response.toString(),
       redirectUri
     );
-
     if (browserResult.type !== "success")
-      throw new Error("Failed to complete login");
+      throw new Error("Create OAuth2 token failed");
 
-    // ✅ Step 3: extract credentials
     const url = new URL(browserResult.url);
     const secret = url.searchParams.get("secret")?.toString();
     const userId = url.searchParams.get("userId")?.toString();
+    if (!secret || !userId) throw new Error("Create OAuth2 token failed");
 
-    if (!secret || !userId) throw new Error("OAuth2 token creation failed");
-
-    // ✅ Step 4: safely create new session
     const session = await account.createSession(userId, secret);
     if (!session) throw new Error("Failed to create session");
 
-    console.log("✅ Login successful for:", session.userId);
     return true;
-
   } catch (error) {
     console.error(error);
     return false;
   }
 }
-
 
 export async function logout() {
   try {
@@ -88,7 +76,6 @@ export async function logout() {
     return false;
   }
 }
-
 
 export async function getCurrentUser() {
   try {
@@ -108,7 +95,6 @@ export async function getCurrentUser() {
     return null;
   }
 }
-
 
 export async function getLatestProperties() {
   try {
@@ -163,17 +149,33 @@ export async function getProperties({
     return [];
   }
 }
-
 export async function getPropertyById({ id }: { id: string }) {
   try {
-    const result = await databases.getDocument(
+    const property = await databases.getDocument(
       config.databaseId!,
       config.propertiesCollectionId!,
       id
     );
-    return result;
+
+    // If agent is just an ID, fetch it separately
+    let agentData = { name: "", email: "", avatar: "" };
+    if (property.agent) {
+      agentData = await databases.getDocument(
+        config.databaseId!, // Agents collection ID
+        config.agentsCollectionId!,
+        property.agent
+      );
+    }
+
+    return {
+      ...property,
+      agent: agentData,
+      reviews: property.reviews ?? [],
+      gallery: property.gallery ?? [],
+      facilities: property.facilities ?? [],
+    };
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching property by ID:", error);
     return null;
   }
 }

@@ -58,7 +58,7 @@ const Home = () => {
 
   return (
     <SafeAreaView className="h-full bg-white">
-      {/* <B title="seed" onPress={seed}/> */}
+      {/* <Button title="seed" onPress={seed}/> */}
       <FlatList
         data={properties}
         numColumns={2}

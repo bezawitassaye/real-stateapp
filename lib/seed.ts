@@ -172,7 +172,7 @@ async function seed() {
           facilities: selectedFacilities,
           image: image,
           agent: assignedAgent.$id,
-         // reviews: assignedReviews.map((review) => review.$id),
+         reviews: assignedReviews.map((review) => review.$id),
           galary: assignedGalleries.map((gallery) => gallery.$id),
         }
       );
